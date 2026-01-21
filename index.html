@@ -22,6 +22,10 @@
       --err:#e74c3c;
 
       --header-h:72px;
+
+      /* added for QR safe-area */
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
     }
 
     *{ box-sizing:border-box; }
@@ -39,6 +43,77 @@
       flex-direction:column;
     }
     button,select{ font:inherit; }
+
+    /* ===== QR (top-left) — ADDED (does not affect your test) ===== */
+    .qr-fab{
+      position:fixed;
+      top:calc(10px + var(--safe-top));
+      left:calc(10px + var(--safe-left));
+      z-index:9999;
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+    }
+    .qr-btn{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,.18);
+      background:#fff;
+      box-shadow:0 10px 22px rgba(0,0,0,.14);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      line-height:1;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+    }
+    .qr-btn:focus-visible{
+      outline:none;
+      box-shadow:0 0 0 3px rgba(255,122,26,.22), 0 10px 22px rgba(0,0,0,.14);
+    }
+    .qr-pop{
+      width:220px;
+      border:1px solid rgba(0,0,0,.14);
+      border-radius:14px;
+      background:#fff;
+      box-shadow:0 16px 34px rgba(0,0,0,.18);
+      overflow:hidden;
+      display:none;
+    }
+    .qr-pop.show{ display:block; }
+    .qr-pop .qr-head{
+      padding:10px 12px;
+      font-weight:900;
+      font-size:.9rem;
+      color:var(--muted);
+      border-bottom:1px solid rgba(0,0,0,.10);
+      background:linear-gradient(to bottom, rgba(0,0,0,.05), rgba(0,0,0,0));
+    }
+    .qr-pop .qr-body{
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:center;
+    }
+    #qrcode{
+      width:160px;
+      height:160px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .qr-hint{
+      margin:0;
+      font-size:.85rem;
+      color:var(--muted);
+      text-align:center;
+      line-height:1.35;
+    }
+    /* ===== end QR additions ===== */
 
     /* ===== Header ===== */
     .topbar{
@@ -337,6 +412,22 @@
 </head>
 
 <body>
+
+  <!-- QR Generator (TOP-LEFT) — ADDED (keeps all test functionality the same) -->
+  <div class="qr-fab" aria-label="QR code generator">
+    <button class="qr-btn" id="qrBtn" type="button" aria-expanded="false" aria-controls="qrPop" title="QR code">
+      QR
+    </button>
+
+    <div class="qr-pop" id="qrPop" role="dialog" aria-modal="false" aria-label="QR code popup">
+      <div class="qr-head">Share this page</div>
+      <div class="qr-body">
+        <div id="qrcode" aria-label="QR code"></div>
+        <p class="qr-hint">Scan on a phone to open this page.</p>
+      </div>
+    </div>
+  </div>
+
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
@@ -455,7 +546,7 @@
               <li><span class="roman">iv.</span> Stay Calm and Confident</li>
               <li><span class="roman">v.</span> Organize Your Content</li>
               <li><span class="roman">vi.</span> How to finish the presentation</li>
-              <li><span class="roman">vii.</span> Manage Your Time</li>
+              <li><span class="roman">vii.</span> Pace Yourself</li>
               <li><span class="roman">viii.</span> Know Your Audience</li>
             </ol>
           </div>
@@ -487,6 +578,44 @@
     </div>
   </footer>
 
+  <!-- QR library — ADDED -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- QR init — ADDED (separate from your test script) -->
+  <script>
+    const qrBtn = document.getElementById("qrBtn");
+    const qrPop = document.getElementById("qrPop");
+    const qrTarget = document.getElementById("qrcode");
+    let qrInstance = null;
+
+    function toggleQR(show){
+      const willShow = (typeof show === "boolean") ? show : !qrPop.classList.contains("show");
+      qrPop.classList.toggle("show", willShow);
+      qrBtn.setAttribute("aria-expanded", String(willShow));
+
+      if (willShow && !qrInstance){
+        qrInstance = new QRCode(qrTarget, {
+          text: window.location.href,
+          width: 160,
+          height: 160,
+          colorDark: "#1e1e1e",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      }
+    }
+
+    qrBtn.addEventListener("click", () => toggleQR());
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") toggleQR(false);
+    });
+    document.addEventListener("click", (e) => {
+      if (!qrPop.classList.contains("show")) return;
+      const inside = e.target === qrBtn || qrPop.contains(e.target) || qrBtn.contains(e.target);
+      if (!inside) toggleQR(false);
+    });
+  </script>
+
   <script>
     // =========================
     // Matching headings (A–G)
@@ -499,7 +628,7 @@
       { id: "iv", label: "iv. Stay Calm and Confident" },
       { id: "v", label: "v. Organize Your Content" },
       { id: "vi", label: "vi. How to finish the presentation" },
-      { id: "vii", label: "vii. Manage Your Time" },
+      { id: "vii", label: "vii. Pace Yourself" },
       { id: "viii", label: "viii. Know Your Audience" }
     ];
 
@@ -520,7 +649,7 @@
     // C: Practice, Practice, Practice
     // D: Engage Your Audience
     // E: Handle Questions Gracefully
-    // F: Manage Your Time
+    // F: Pace Yourself
     // G: Stay Calm and Confident
     const answerKey = {
       22: "viii",
@@ -746,3 +875,4 @@
   </script>
 </body>
 </html>
+
