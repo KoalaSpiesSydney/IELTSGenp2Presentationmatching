@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>IELTS Reading – Matching Headings | Modern English Australia · Koala Spies Sydney</title>
+
+  <style>
+    :root{
+      --bg:#f5f5f5;
+      --bar:#1e1f21;
+      --panel:#ffffff;
+      --ink:#1e1e1e;
+      --muted:#6b737a;
+      --line:rgba(0,0,0,.12);
+
+      --accent:#ff7a1a;
+      --shadow:0 10px 28px rgba(0,0,0,.14);
+      --radius:16px;
+
+      --ok:#1db954;
+      --err:#e74c3c;
+
+      --header-h:72px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      -webkit-text-size-adjust:100%;
+      text-rendering:optimizeLegibility;
+
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+    button,select{ font:inherit; }
+
+    /* ===== Header ===== */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:var(--bar);
+      color:#fff;
+      border-bottom:1px solid rgba(255,255,255,.12);
+    }
+    .topbar-inner{
+      max-width:1320px;
+      margin:0 auto;
+      padding:10px 14px;
+      min-height:var(--header-h);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+    .brand .title{
+      font-weight:900;
+      letter-spacing:1.6px;
+      color:var(--accent);
+      font-size:1.05rem;
+      text-transform:uppercase;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .brand .sub{
+      font-weight:500;
+      font-size:.9rem;
+      color:rgba(255,255,255,.88);
+      letter-spacing:.6px;
+      margin-top:4px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    /* ===== Main ===== */
+    main{
+      flex:1;
+      max-width:1320px;
+      width:100%;
+      margin:0 auto;
+      padding:14px 14px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    /* Rubric card */
+    .rubric{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:14px 16px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .rubric h2{ margin:0; font-size:1.05rem; }
+    .rubric p{ margin:4px 0 0; color:var(--muted); font-style:italic; }
+    .rubric .meta{ text-align:right; color:var(--muted); font-size:.92rem; white-space:nowrap; }
+
+    /* ===== Split workspace ===== */
+    .split{
+      flex:1;
+      min-height:min(72vh, 780px);
+      display:grid;
+      grid-template-columns: minmax(320px, 1fr) 12px minmax(420px, 1fr);
+      gap:0;
+      align-items:stretch;
+    }
+
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+    }
+    .panel-head{
+      padding:12px 14px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(to bottom, rgba(0,0,0,.03), rgba(0,0,0,0));
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .panel-title{ font-weight:900; font-size:.98rem; letter-spacing:.2px; }
+    .panel-sub{ font-size:.9rem; color:var(--muted); }
+    .panel-body{
+      padding:14px;
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    /* Divider (desktop resizer) */
+    .divider{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:col-resize;
+      touch-action:none;
+      user-select:none;
+    }
+    .divider .bar{
+      width:12px;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:transparent;
+    }
+    .divider .handle{
+      width:10px;
+      height:54px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow:0 6px 16px rgba(0,0,0,.12);
+    }
+
+    /* Passage typography */
+    .reading h3{ margin:0 0 10px; font-size:1.05rem; font-weight:900; }
+    .reading p{ margin:0 0 12px; line-height:1.7; }
+    .para-label{
+      font-weight:900;
+      margin-right:8px;
+      color:var(--muted);
+    }
+
+    /* Question area */
+    .task-title{ margin:0 0 6px; font-size:1.05rem; font-weight:900; }
+    .task-instruction{ margin:0 0 12px; color:var(--muted); line-height:1.5; }
+
+    /* Headings box */
+    .headings-box{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      box-shadow:0 8px 18px rgba(0,0,0,.07);
+      padding:12px;
+      margin:0 0 12px;
+    }
+    .headings-box .hb-title{
+      font-weight:900;
+      margin:0 0 8px;
+    }
+    .headings{
+      margin:0;
+      padding-left:18px;
+      color:var(--ink);
+    }
+    .headings li{ margin:6px 0; }
+    .headings .roman{
+      font-weight:900;
+      color:var(--muted);
+      margin-right:6px;
+    }
+
+    /* Matching list */
+    .match-list{
+      margin:0;
+      padding-left:0;
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .match-item{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      padding:12px;
+      box-shadow:0 8px 18px rgba(0,0,0,.07);
+      display:grid;
+      grid-template-columns: 64px 1fr;
+      gap:10px;
+      align-items:start;
+    }
+    .qnum{
+      font-weight:900;
+      color:var(--muted);
+      font-variant-numeric:tabular-nums;
+    }
+    .prompt{
+      line-height:1.5;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .prompt .ptext{ flex:1 1 240px; min-width:180px; }
+
+    .pick{
+      min-width:min(320px, 86vw);
+      max-width:100%;
+      padding:10px 10px;
+      border-radius:10px;
+      border:2px solid rgba(0,0,0,.18);
+      background:#fff;
+      outline:none;
+      font-size:1rem;
+    }
+    .pick:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px rgba(255,122,26,.22);
+    }
+    .pick.ok{ border-color:var(--ok); background:rgba(29,185,84,.10); }
+    .pick.bad{ border-color:var(--err); background:rgba(231,76,60,.10); }
+
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .action{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,.14);
+      background:#fff;
+      color:var(--ink);
+      cursor:pointer;
+      font-weight:900;
+      box-shadow:0 10px 22px rgba(0,0,0,.10);
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+      white-space:nowrap;
+    }
+    .action.primary{
+      border-color:rgba(255,122,26,.35);
+      background:rgba(255,122,26,.14);
+    }
+    .action:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+    .action:focus-visible{
+      outline:none;
+      box-shadow:0 0 0 3px rgba(255,122,26,.22), 0 10px 22px rgba(0,0,0,.10);
+    }
+
+    #score{ margin-top:12px; font-weight:900; min-height:1.4rem; }
+
+    #feedbackPanel{
+      margin-top:12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      box-shadow:var(--shadow);
+      padding:12px;
+      display:none;
+    }
+    #feedbackText{ color:var(--muted); line-height:1.55; }
+
+    /* ===== Footer ===== */
+    footer{
+      background:var(--bar);
+      border-top:1px solid rgba(255,255,255,.12);
+      color:rgba(255,255,255,.72);
+    }
+    .footer-inner{
+      max-width:1320px;
+      margin:0 auto;
+      padding:12px 14px;
+      text-align:center;
+      font-size:.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .split{ grid-template-columns: 1fr; min-height:auto; gap:12px; }
+      .divider{ display:none; }
+      .match-item{ grid-template-columns: 54px 1fr; }
+      .pick{ width:100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{ transition:none !important; scroll-behavior:auto !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="title">Modern English Australia</div>
+        <div class="sub">Koala Spies Sydney · IELTS Practice</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="rubric" aria-label="Rubric">
+      <div>
+        <h2>SECTION 2</h2>
+        <p>Read the text below and answer Questions 22-28.</p>
+      </div>
+      <div class="meta">
+        Test taker ID<br>
+        <strong>Placeholder</strong>
+      </div>
+    </section>
+
+    <section class="split" id="split">
+      <!-- LEFT: TEXT -->
+      <section class="panel" aria-label="Reading text">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Reading passage</div>
+            <div class="panel-sub">Tips for Presentations</div>
+          </div>
+        </div>
+
+        <div class="panel-body reading">
+          <h3>Tips on Presentations</h3>
+
+          <p>
+            Giving a presentation can be a daunting task, but with the right preparation and mindset, you can deliver a
+            compelling and engaging presentation. Here are some tips to help you succeed:
+          </p>
+
+          <p>
+            <span class="para-label">A.</span>
+            Understand who your audience is and what they are interested in by tailoring your content to meet their needs
+            and expectations. By developing a nuanced understanding of their background, motivations, and prior knowledge,
+            you can shape your message in a way that resonates more deeply and increases the overall impact of your delivery.
+          </p>
+
+          <p>
+            <span class="para-label">B.</span>
+            Another essential basic is to structure your presentation in a logical flow. Start with an introduction, followed
+            by the main points, and conclude with a summary or call to action. A well considered structure not only enhances
+            coherence but also enables your audience to process complex information more effectively as the presentation unfolds.
+          </p>
+
+          <p>
+            <span class="para-label">C.</span>
+            Rehearse your presentation multiple times. This will help you familiarise with the content and improve your delivery.
+          </p>
+
+          <p>
+            <span class="para-label">D.</span>
+            Using visual aids, asking questions, and encouraging interaction will keep your audience engaged. Make eye contact and
+            use body language to convey confidence and enthusiasm. Such interactive strategies foster a dynamic learning environment
+            in which listeners remain attentive and feel more personally invested in the material.
+          </p>
+
+          <p>
+            <span class="para-label">E.</span>
+            You should be prepared to answer questions from your audience. Listen carefully, respond thoughtfully, and if you don't
+            know the answer, be honest and offer to follow up later. Handling questions with composure and intellectual honesty reinforces
+            your credibility and demonstrates a willingness to engage in meaningful dialogue.
+          </p>
+
+          <p>
+            <span class="para-label">F.</span>
+            Try to keep track of time to ensure you cover all your points without rushing or going over the allotted time. Effective time
+            management reflects professionalism and ensures that each section of your presentation receives the attention it deserves without
+            overwhelming your audience.
+          </p>
+
+          <p>
+            <span class="para-label">G.</span>
+            Take deep breaths, stay calm, and project confidence. Remember, you are the expert on the topic you are presenting. Maintaining a
+            steady, self assured presence helps establish authority and reassures your audience that they are in capable hands throughout the presentation.
+          </p>
+        </div>
+      </section>
+
+      <!-- DIVIDER -->
+      <div class="divider" id="divider" role="separator" aria-orientation="vertical" tabindex="0" aria-label="Resize panels">
+        <div class="bar"><div class="handle" aria-hidden="true"></div></div>
+      </div>
+
+      <!-- RIGHT: QUESTIONS -->
+      <section class="panel" aria-label="Questions">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Questions 22-28</div>
+            <div class="panel-sub">Matching headings</div>
+          </div>
+        </div>
+
+        <div class="panel-body">
+          <div class="task-title">Questions 22-28</div>
+          <div class="task-instruction">
+            Match the headings <strong>i–viii</strong> with the paragraphs <strong>A–G</strong>.<br>
+            You may use any heading more than once.<br>
+            There is <strong>one</strong> extra heading you do not need to use.
+          </div>
+
+          <div class="headings-box" aria-label="Headings list">
+            <div class="hb-title">Headings</div>
+            <ol class="headings" type="i">
+              <li><span class="roman">i.</span> Handle Questions Gracefully</li>
+              <li><span class="roman">ii.</span> Practice, Practice, Practice</li>
+              <li><span class="roman">iii.</span> Engage Your Audience</li>
+              <li><span class="roman">iv.</span> Stay Calm and Confident</li>
+              <li><span class="roman">v.</span> Organize Your Content</li>
+              <li><span class="roman">vi.</span> How to finish the presentation</li>
+              <li><span class="roman">vii.</span> Manage Your Time</li>
+              <li><span class="roman">viii.</span> Know Your Audience</li>
+            </ol>
+          </div>
+
+          <ol class="match-list" id="matchList">
+            <!-- injected by JS -->
+          </ol>
+
+          <div class="controls">
+            <button class="action primary" id="submitBtn" type="button">Submit & score</button>
+            <button class="action" id="revealNextBtn" type="button" disabled>Reveal next</button>
+            <button class="action" id="resetBtn" type="button">Reset</button>
+          </div>
+
+          <div id="score" aria-live="polite"></div>
+
+          <div id="feedbackPanel" aria-live="polite">
+            <div style="font-weight:900; margin-bottom:6px;">Feedback</div>
+            <div id="feedbackText"></div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      © Koala Spies Sydney · Modern English Australia · All Rights Reserved
+    </div>
+  </footer>
+
+  <script>
+    // =========================
+    // Matching headings (A–G)
+    // =========================
+
+    const headings = [
+      { id: "i", label: "i. Handle Questions Gracefully" },
+      { id: "ii", label: "ii. Practice, Practice, Practice" },
+      { id: "iii", label: "iii. Engage Your Audience" },
+      { id: "iv", label: "iv. Stay Calm and Confident" },
+      { id: "v", label: "v. Organize Your Content" },
+      { id: "vi", label: "vi. How to finish the presentation" },
+      { id: "vii", label: "vii. Manage Your Time" },
+      { id: "viii", label: "viii. Know Your Audience" }
+    ];
+
+    // Questions 1–7 map to paragraphs A–G
+    const questions = [
+      { q: 22, para: "A" },
+      { q: 23, para: "B" },
+      { q: 24, para: "C" },
+      { q: 25, para: "D" },
+      { q: 26, para: "E" },
+      { q: 27, para: "F" },
+      { q: 28, para: "G" }
+    ];
+
+    // Answer key (one extra heading remains unused)
+    // A: Know Your Audience
+    // B: Organize Your Content
+    // C: Practice, Practice, Practice
+    // D: Engage Your Audience
+    // E: Handle Questions Gracefully
+    // F: Manage Your Time
+    // G: Stay Calm and Confident
+    const answerKey = {
+      22: "viii",
+      23: "v",
+      24: "ii",
+      25: "iii",
+      26: "i",
+      27: "vii",
+      28: "iv"
+    };
+
+    let revealIndex = 0;
+
+    const matchList = document.getElementById("matchList");
+    const submitBtn = document.getElementById("submitBtn");
+    const revealNextBtn = document.getElementById("revealNextBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const scoreEl = document.getElementById("score");
+    const feedbackPanel = document.getElementById("feedbackPanel");
+    const feedbackText = document.getElementById("feedbackText");
+
+    function buildList(){
+      matchList.innerHTML = "";
+      questions.forEach(({ q, para }) => {
+        const li = document.createElement("li");
+        li.className = "match-item";
+
+        const left = document.createElement("div");
+        left.className = "qnum";
+        left.textContent = q;
+
+        const right = document.createElement("div");
+        right.className = "prompt";
+
+        const ptext = document.createElement("div");
+        ptext.className = "ptext";
+        ptext.innerHTML = `Paragraph <strong>${para}</strong>`;
+
+        const sel = document.createElement("select");
+        sel.className = "pick";
+        sel.id = `q${q}`;
+        sel.setAttribute("aria-label", `Question ${q} select heading`);
+
+        const opt0 = document.createElement("option");
+        opt0.value = "";
+        opt0.textContent = "Select a heading…";
+        sel.appendChild(opt0);
+
+        headings.forEach(h => {
+          const opt = document.createElement("option");
+          opt.value = h.id;
+          opt.textContent = h.label;
+          sel.appendChild(opt);
+        });
+
+        right.appendChild(ptext);
+        right.appendChild(sel);
+
+        li.appendChild(left);
+        li.appendChild(right);
+
+        matchList.appendChild(li);
+      });
+    }
+
+    function clearMarks(){
+      questions.forEach(({ q }) => {
+        const sel = document.getElementById(`q${q}`);
+        sel.classList.remove("ok", "bad");
+      });
+    }
+
+    function setFeedback(msg){
+      feedbackText.textContent = msg || "";
+      feedbackPanel.style.display = msg ? "block" : "none";
+    }
+
+    function scoreAll(){
+      clearMarks();
+      let correct = 0;
+      let answered = 0;
+
+      questions.forEach(({ q }) => {
+        const sel = document.getElementById(`q${q}`);
+        const val = (sel.value || "").trim();
+        const key = answerKey[q];
+
+        if (val) answered++;
+
+        if (val && val === key){
+          correct++;
+          sel.classList.add("ok");
+        } else if (val && val !== key){
+          sel.classList.add("bad");
+        }
+      });
+
+      scoreEl.textContent = `Score: ${correct} / ${questions.length} (answered ${answered})`;
+
+      if (answered === questions.length && correct === questions.length){
+        setFeedback("All correct.");
+      } else if (answered === 0){
+        setFeedback("Choose headings for each paragraph, then submit.");
+      } else {
+        setFeedback("Check the items marked in red and try again. Use Reveal next if you want one answer at a time.");
+      }
+
+      revealNextBtn.disabled = false;
+    }
+
+    function revealNext(){
+      // Reveal the next unanswered or incorrect question, in order 1–7
+      const ordered = questions.map(x => x.q);
+      for (let i = revealIndex; i < ordered.length; i++){
+        const q = ordered[i];
+        const sel = document.getElementById(`q${q}`);
+        const key = answerKey[q];
+        if (sel.value !== key){
+          sel.value = key;
+          sel.classList.remove("bad");
+          sel.classList.add("ok");
+          revealIndex = i + 1;
+          setFeedback(`Revealed answer for Question ${q}.`);
+          break;
+        }
+        revealIndex = i + 1;
+      }
+
+      if (revealIndex >= questions.length){
+        revealNextBtn.disabled = true;
+        setFeedback("All remaining answers have been revealed.");
+      }
+
+      // Update score display after reveal
+      let correct = 0;
+      let answered = 0;
+      questions.forEach(({ q }) => {
+        const sel = document.getElementById(`q${q}`);
+        const val = (sel.value || "").trim();
+        if (val) answered++;
+        if (val === answerKey[q]) correct++;
+      });
+      scoreEl.textContent = `Score: ${correct} / ${questions.length} (answered ${answered})`;
+    }
+
+    function resetAll(){
+      questions.forEach(({ q }) => {
+        const sel = document.getElementById(`q${q}`);
+        sel.value = "";
+        sel.classList.remove("ok", "bad");
+      });
+      scoreEl.textContent = "";
+      setFeedback("");
+      revealIndex = 0;
+      revealNextBtn.disabled = true;
+    }
+
+    // Optional: simple drag divider (desktop)
+    (function initDivider(){
+      const split = document.getElementById("split");
+      const divider = document.getElementById("divider");
+      if (!split || !divider) return;
+
+      let dragging = false;
+
+      function setCols(leftPx){
+        const minLeft = 320;
+        const minRight = 420;
+        const total = split.getBoundingClientRect().width;
+        const dividerW = 12;
+
+        const left = Math.max(minLeft, Math.min(leftPx, total - dividerW - minRight));
+        split.style.gridTemplateColumns = `minmax(${minLeft}px, ${left}px) ${dividerW}px minmax(${minRight}px, 1fr)`;
+      }
+
+      function onDown(e){
+        if (window.matchMedia("(max-width: 980px)").matches) return;
+        dragging = true;
+        divider.setAttribute("aria-grabbed", "true");
+        divider.focus();
+        e.preventDefault();
+      }
+      function onMove(e){
+        if (!dragging) return;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const rect = split.getBoundingClientRect();
+        setCols(clientX - rect.left);
+      }
+      function onUp(){
+        if (!dragging) return;
+        dragging = false;
+        divider.setAttribute("aria-grabbed", "false");
+      }
+
+      divider.addEventListener("mousedown", onDown);
+      divider.addEventListener("touchstart", onDown, { passive:false });
+      window.addEventListener("mousemove", onMove);
+      window.addEventListener("touchmove", onMove, { passive:true });
+      window.addEventListener("mouseup", onUp);
+      window.addEventListener("touchend", onUp);
+
+      divider.addEventListener("keydown", (e) => {
+        if (window.matchMedia("(max-width: 980px)").matches) return;
+        const rect = split.getBoundingClientRect();
+        const current = split.style.gridTemplateColumns || "";
+        // Try to parse current left px if present
+        let leftPx = Math.round(rect.width * 0.50);
+        const m = current.match(/minmax\(\d+px,\s*([0-9.]+)px\)/);
+        if (m) leftPx = parseFloat(m[1]);
+
+        const step = 24;
+        if (e.key === "ArrowLeft"){ setCols(leftPx - step); e.preventDefault(); }
+        if (e.key === "ArrowRight"){ setCols(leftPx + step); e.preventDefault(); }
+      });
+    })();
+
+    // Init
+    buildList();
+
+    submitBtn.addEventListener("click", scoreAll);
+    revealNextBtn.addEventListener("click", revealNext);
+    resetBtn.addEventListener("click", resetAll);
+  </script>
+</body>
+</html>
